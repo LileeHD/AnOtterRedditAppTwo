@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel;
 import lilee.hd.anotterredditapptwo.model.Children;
 import lilee.hd.anotterredditapptwo.model.Feed;
 import lilee.hd.anotterredditapptwo.model.Post;
+import lilee.hd.anotterredditapptwo.model.SubredditNode;
 
 public class PostViewModel extends ViewModel {
 
     private final MutableLiveData<Post> currentPost = new MutableLiveData<Post>();
     private MutableLiveData<Feed> mutableLiveData;
+    private MutableLiveData<SubredditNode> nodeMutableLiveData;
     private String minputResult;
 
     private RedditRepository repository;

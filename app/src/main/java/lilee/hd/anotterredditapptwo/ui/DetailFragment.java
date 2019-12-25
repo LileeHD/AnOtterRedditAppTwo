@@ -7,12 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +47,6 @@ public class DetailFragment extends Fragment {
     ImageView share;
     @BindView(R.id.comment_list_rv)
     RecyclerView commentRecyclerView;
-
     private PostViewModel mPostViewModel;
     private PostViewAdapter adapter;
     private Post post;
@@ -62,31 +68,41 @@ public class DetailFragment extends Fragment {
         return view;
     }
 
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        mPostViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
-//        mPostViewModel.getCurrentPost().observe(getViewLifecycleOwner(),
-//                children -> {
-//                    post = mPostViewModel.getCurrentPost().getValue();
-//                    String title = post.getTitle();
-//                    titleView.setText(title);
-//                    Log.d(TAG, "onCreateView: "+ post.getId());
-//                });
-//        Log.d(TAG, "onViewCreated:");
-//    }
-
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mPostViewModel = ViewModelProviders.of(getActivity()).get(PostViewModel.class);
         mPostViewModel.getCurrentPost().observe(getActivity(),
                 children -> {
-                    Post post = mPostViewModel.getCurrentPost().getValue();
-                    String title = post.getTitle();
-                    titleView.setText(title);
-                    Log.d(TAG, "onCreateView: "+ post.getId());
+                    bindViews();
                 });
     }
+
+    private void bindViews(){
+        Post post = mPostViewModel.getCurrentPost().getValue();
+        if (post != null) {
+            subNameView.setText(post.getSubredditR());
+            authorView.setText(post.getAuthor());
+            titleView.setText(post.getTitle());
+            postBodyView.setText(post.getBody());
+
+            if (post.getImageUrl() == null) {
+                postImg.setVisibility(View.GONE);
+            } else {
+                RequestOptions defaultOptions = new RequestOptions()
+                        .error(null);
+                Glide.with(getContext())
+                        .setDefaultRequestOptions(defaultOptions)
+                        .load(post.getImageUrl())
+                        .centerInside()
+                        .into(postImg);
+            }
+            if (post.getBody().isEmpty()) {
+                postBodyView.setVisibility(View.GONE);
+            } else {
+                postBodyView.setText(post.getBody());
+            }
+        }
+    }
+
 }

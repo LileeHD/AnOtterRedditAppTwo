@@ -1,10 +1,14 @@
 package lilee.hd.anotterredditapptwo.model;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
-//@Entity(tableName = "subreddit_table")
+@Entity(tableName = "subreddit_table")
 public class Subreddit {
-    //    @PrimaryKey
+    @PrimaryKey
     private int id;
 
     @SerializedName("display_name")
@@ -16,8 +20,10 @@ public class Subreddit {
     @SerializedName("description")
     private String description;
 
-//    @Ignore
+    @SerializedName("over18")
+    private boolean isNsfw;
 
+    @Ignore
     public Subreddit() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
@@ -58,5 +64,13 @@ public class Subreddit {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isNsfw() {
+        return isNsfw;
+    }
+
+    public void setNsfw(boolean nsfw) {
+        isNsfw = nsfw;
     }
 }

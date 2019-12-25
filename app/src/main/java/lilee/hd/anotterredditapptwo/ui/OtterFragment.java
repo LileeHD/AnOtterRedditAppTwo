@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,12 +36,12 @@ import lilee.hd.anotterredditapptwo.R;
 import lilee.hd.anotterredditapptwo.adapter.PostViewAdapter;
 import lilee.hd.anotterredditapptwo.model.Children;
 import lilee.hd.anotterredditapptwo.model.Post;
-import lilee.hd.anotterredditapptwo.util.SharedViewModel;
 import lilee.hd.anotterredditapptwo.viewmodel.PostViewModel;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class OtterFragment extends Fragment implements PostViewAdapter.PostClickListener {
+    private static final String TAG = "OtterFragment";
     @BindView(R.id.logo_otter)
     ImageView logo;
     @BindView(R.id.list_view_otter)
@@ -51,20 +52,19 @@ public class OtterFragment extends Fragment implements PostViewAdapter.PostClick
     TextView connectionInfo;
     @BindView(R.id.progressbar_otter)
     ProgressBar progressBar;
+
     private Snackbar snackbar;
     private PostViewAdapter adapter;
     private Children post;
     private Post currentpost;
     private ArrayList<Children> postsList = new ArrayList<>();
     private PostViewModel mPostViewModel;
-    private SharedViewModel sharedViewModel;
-    private String mSearchResult;
     private boolean mIsRefreshing = false;
     private String sort = "new";
 
-    private static final String TAG = "OtterFragment";
     public OtterFragment() {
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -77,11 +77,9 @@ public class OtterFragment extends Fragment implements PostViewAdapter.PostClick
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mPostViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
-        mPostViewModel.getCurrentPost().observe(getViewLifecycleOwner(),
-                children -> mPostViewModel.sendData(children));
     }
 
     private void initViewModel() {
@@ -105,7 +103,6 @@ public class OtterFragment extends Fragment implements PostViewAdapter.PostClick
             postView.setAdapter(adapter);
             postView.setLayoutManager(new LinearLayoutManager(getContext()));
             postView.setHasFixedSize(true);
-//            mSwipeRefreshLayout.setOnRefreshListener(this::initPostView);
             mSwipeRefreshLayout.setOnRefreshListener(() -> {
                 adapter.notifyDataSetChanged();
             });
@@ -117,24 +114,20 @@ public class OtterFragment extends Fragment implements PostViewAdapter.PostClick
     @Override
     public void onPostClick(PostViewModel model, int position) {
         post = postsList.get(position);
-        postView.setOnClickListener(v -> {
-            mPostViewModel.getCurrentPost();
-        });
+        mPostViewModel.sendData(post.getData());
         swapFragment();
         Log.d(TAG, "onPostClick: ");
     }
-    private void swapFragment(){
+
+    private void swapFragment() {
         DetailFragment detailFragment = new DetailFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, detailFragment);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("tag");
         transaction.commit();
     }
-    //  Navigation
-    private void updateRefreshingUI() {
-        mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
-    }
 
+    //  Navigation
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_refresh) {
@@ -145,13 +138,13 @@ public class OtterFragment extends Fragment implements PostViewAdapter.PostClick
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkConnection(){
+    private void checkConnection() {
         ConnectivityManager manager = (ConnectivityManager) getActivity().getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager != null ? manager.getActiveNetworkInfo() : null;
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()){
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             initViewModel();
             initPostView();
-        }else{
+        } else {
             connectionInfo.setVisibility(View.VISIBLE);
             connectionInfo.setText(getText(R.string.no_connected));
             mSwipeRefreshLayout.setVisibility(View.GONE);

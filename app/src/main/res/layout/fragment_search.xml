@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:id="@+id/search_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -25,7 +26,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/Save"
+            android:id="@+id/save"
             android:background="@drawable/white_square_btn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
@@ -45,7 +46,7 @@
             android:id="@+id/create_feed"
             android:background="@drawable/white_square_btn"/>
         <TextView
-            android:id="@+id/connection_info"
+            android:id="@+id/sub_connection_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/grey"
@@ -56,7 +57,7 @@
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_layout"
+            android:id="@+id/sub_swipe_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/grey"
@@ -64,7 +65,7 @@
             android:visibility="visible">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_list_view"
+                android:id="@+id/sub_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elevation="8dp"

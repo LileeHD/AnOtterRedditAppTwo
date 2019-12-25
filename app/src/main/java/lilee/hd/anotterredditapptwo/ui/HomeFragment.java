@@ -1,5 +1,6 @@
 package lilee.hd.anotterredditapptwo.ui;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -57,7 +58,6 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
     TextView connectionInfo;
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
-    private Snackbar snackbar;
     private PostViewAdapter adapter;
     private Children post;
     private LiveData<Post> currentpost;
@@ -92,24 +92,9 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mPostViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
-        mPostViewModel.getCurrentPost().observe(getActivity(),
-                children -> mPostViewModel.sendData(children));
-    }
-
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPostViewModel = ViewModelProviders.of(getActivity()).get(PostViewModel.class);
-        mPostViewModel.getCurrentPost().observe(getActivity(),
-                children ->{
-                    currentpost= mPostViewModel.getCurrentPost();
-                    mPostViewModel.sendData(currentpost.getValue());
-                });
-
     }
 
     private void initViewModel() {
@@ -140,10 +125,8 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
     // Click
     @Override
     public void onPostClick(PostViewModel model, int position) {
-        postView.setOnClickListener(v -> {
-            post = postsList.get(position);
-            currentpost= mPostViewModel.getCurrentPost();
-        });
+        post = postsList.get(position);
+        mPostViewModel.sendData(post.getData());
         swapFragment();
         Log.d(TAG, "onPostClick: ");
     }
@@ -151,7 +134,7 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
         DetailFragment detailFragment = new DetailFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, detailFragment);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack("home");
         transaction.commit();
     }
     //  Navigation

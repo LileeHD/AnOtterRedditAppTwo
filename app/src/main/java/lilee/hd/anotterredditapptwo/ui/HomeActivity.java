@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
                     selectedFragment = new SearchFragment();
                     break;
                 case R.id.ic_otter:
-                    selectedFragment = new OtterFragment();
+                    selectedFragment = new UserFeedFragment();
                     break;
             }
             getSupportFragmentManager().beginTransaction()
