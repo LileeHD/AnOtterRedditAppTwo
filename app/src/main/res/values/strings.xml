@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">AnOtterRedditAppTwo</string>
+
+    <string name="no_comments">No comments</string>
+    <string name="loading_comments">Loading comments…</string>
+    <string name="loading_posts">Loading posts…</string>
+    <string name="search_subreddit_hint">Search Subreddits…</string>
+    <string name="cd_post_list">Post list</string>
+    <string name="cd_comments_list">Comments list</string>
+    <string name="cd_subreddit_name">Name of the subreddit</string>
+    <string name="cd_subreddit_search">search icon</string>
+    <string name="search_hint">Search</string>
+    <string name="home">home</string>
+    <string name="search">search</string>
+    <string name="otter">otter</string>
+    <string name="r_subreddit">r_subreddit</string>
+    <string name="endpoint_user_author">endpoint_user_author</string>
+    <string name="_7h">_7h</string>
+    <string name="imageUrl">imageUrl</string>
+    <string name="post_title">post_title</string>
+    <string name="post_body_ipsum">post_body_ipsum</string>
+    <string name="comment_icon">comment_icon</string>
+    <string name="_127">_127</string>
+    <string name="share_icon">share_icon</string>
+    <string name="share">share</string>
+    <string name="lilee">lilee</string>
+    <string name="subreddit_icon">subreddit_icon</string>
+    <string name="android">android</string>
+    <string name="favorite_icon">favorite_icon</string>
+    <string name="subscribers">subscribers</string>
+    <string name="random_number">15613513</string>
+    <string name="refresh">refresh</string>
+    <string name="no_connected">not connected</string>
+    <string name="app_logo">app_logo</string>
+    <string name="autofill_hint">search</string>
+    <string name="search_icon">search_icon</string>
+    <string name="connection">connection</string>
+    <string name="save">save</string>
+    <string name="create_feed">Create Feed</string>
+    <string name="option_icon">option icon</string>
+
+</resources>
