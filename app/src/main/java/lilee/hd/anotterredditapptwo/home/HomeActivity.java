@@ -1,9 +1,10 @@
-package lilee.hd.anotterredditapptwo.ui;
+package lilee.hd.anotterredditapptwo.home;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -17,25 +18,18 @@ public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private Context mContext = HomeActivity.this;
     private BottomNavigationView navView;
-    private BottomNavigationView.OnNavigationItemSelectedListener navListener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNavSetup();
-
-        if (savedInstanceState == null && getIntent().getData() != null) {
-            navView.setSelectedItemId(R.id.ic_search);
-        } else {
-            navView.setSelectedItemId(R.id.ic_home);
-        }
+        checkConnection(savedInstanceState);
     }
 
     private void bottomNavSetup() {
         navView = findViewById(R.id.bottom_nav_bar);
-        navListener = item -> {
+        BottomNavigationView.OnNavigationItemSelectedListener navListener = item -> {
             Fragment selectedFragment = new HomeFragment();
             switch (item.getItemId()) {
                 case R.id.ic_home:
@@ -45,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
                     selectedFragment = new SearchFragment();
                     break;
                 case R.id.ic_otter:
-                    selectedFragment = new UserFeedFragment();
+                    selectedFragment = new OtterFragment();
                     break;
             }
             getSupportFragmentManager().beginTransaction()
@@ -54,15 +48,18 @@ public class HomeActivity extends AppCompatActivity {
         };
         navView.setOnNavigationItemSelectedListener(navListener);
     }
-    private void checkConnection(){
+    private void checkConnection(Bundle savedInstanceState){
         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager != null ? manager.getActiveNetworkInfo() : null;
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()){
-
+            if (savedInstanceState == null && getIntent().getData() != null) {
+                navView.setSelectedItemId(R.id.ic_search);
+            } else {
+                navView.setSelectedItemId(R.id.ic_home);
+            }
         }else{
-//            connectionInfo.setVisibility(View.VISIBLE);
-//            connectionInfo.setText(getText(R.string.no_connected));
-//            mSwipeRefreshLayout.setVisibility(View.GONE);
+            Toast.makeText(mContext, "No connection", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package lilee.hd.anotterredditapptwo.viewmodel;
+package lilee.hd.anotterredditapptwo.reddit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,5 +15,6 @@ public class RedditService {
     public static <S> S createService(Class<S> serviceClass) {
         return retrofit.create(serviceClass);
     }
+
 
 }

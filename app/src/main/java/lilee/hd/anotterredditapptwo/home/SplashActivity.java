@@ -1,4 +1,4 @@
-package lilee.hd.anotterredditapptwo.ui;
+package lilee.hd.anotterredditapptwo.home;
 
 import android.content.Intent;
 import android.os.Bundle;

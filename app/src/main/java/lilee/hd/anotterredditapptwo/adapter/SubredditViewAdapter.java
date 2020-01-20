@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,24 +15,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lilee.hd.anotterredditapptwo.R;
 import lilee.hd.anotterredditapptwo.model.Subreddit;
-import lilee.hd.anotterredditapptwo.model.SubredditNode;
 import lilee.hd.anotterredditapptwo.viewmodel.SubredditViewModel;
 
 public class SubredditViewAdapter extends RecyclerView.Adapter<SubredditViewAdapter.SubredditViewHolder> {
-    private SubredditViewModel viewModel;
-    private List<SubredditNode> subreddits;
-    private Context context;
-    private SubredditNode subreddit;
 
-    public SubredditViewAdapter(List<SubredditNode> subreddits, Context context) {
-        this.subreddits = subreddits;
+    private ArrayList<Subreddit> mSubreddits = new ArrayList<>();
+    private Context context;
+    private Subreddit subreddit;
+    private SubredditViewModel subViewModel;
+    private SubClickListener mListener;
+
+    public SubredditViewAdapter(Context context, SubredditViewModel viewModel, SubClickListener listener) {
         this.context = context;
+        this.subViewModel = viewModel;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -39,52 +41,74 @@ public class SubredditViewAdapter extends RecyclerView.Adapter<SubredditViewAdap
     public SubredditViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_subreddit_item,
                 parent, false);
-        viewModel = new SubredditViewModel();
-        return new SubredditViewHolder(view);
+        return new SubredditViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SubredditViewHolder holder, int position) {
-        subreddit = subreddits.get(position);
-        holder.subredditName.setText(subreddit.getData().getName());
-        holder.subredditDescription.setText(subreddit.getData().getDescription());
-        if (subreddit.getData().getIconUrl() == null) {
-            holder.subIcon.setVisibility(View.GONE);
-        } else {
-            imageLoader(holder);
+        if (mSubreddits != null) {
+            subreddit = mSubreddits.get(position);
+            holder.subredditName.setText(subreddit.getName());
+
+            if (subreddit.getIconUrl() == null) {
+                holder.subIcon.setVisibility(View.GONE);
+            } else {
+                imageLoader(holder);
+            }
+            holder.initRemoveBtn(mSubreddits.get(position));
         }
     }
+
     private void imageLoader(SubredditViewHolder holder) {
         RequestOptions defaultOptions = new RequestOptions()
-                .error(null);
+                .error(R.drawable.ic_otter);
         Glide.with(context)
                 .setDefaultRequestOptions(defaultOptions)
-                .load(subreddits)
+                .load(subreddit.getIconUrl())
+                .placeholder(R.drawable.ic_otter)
                 .into(holder.subIcon);
+    }
+
+    public void updateList(ArrayList<Subreddit> subreddits) {
+        mSubreddits = subreddits;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        if (subreddits != null && subreddits.size() > 0) {
-            return subreddits.size();
+        if (mSubreddits != null && mSubreddits.size() > 0) {
+            return mSubreddits.size();
         } else {
             return 0;
         }
     }
-
-    public class SubredditViewHolder extends RecyclerView.ViewHolder {
+    public interface SubClickListener {
+        void onSubClick(int position);
+    }
+    class SubredditViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.subreddit_name)
         TextView subredditName;
-        @BindView(R.id.subreddit_description)
-        TextView subredditDescription;
         @BindView(R.id.subreddit_icon)
-        ImageButton subIcon;
-        @BindView(R.id.subscribers_num)
-        TextView subscribersNum;
+        ImageView subIcon;
+        @BindView(R.id.close_icon)
+        ImageButton removeBtn;
+        SubClickListener mListener;
 
-        public SubredditViewHolder(@NonNull View itemView) {
+        SubredditViewHolder(@NonNull View itemView, SubClickListener listener){
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.mListener = listener;
+            itemView.setOnClickListener(this);
+        }
+
+        private void initRemoveBtn(Subreddit subreddit){
+            removeBtn.setOnClickListener(v -> subViewModel.removeSubreddit(subreddit));
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            mListener.onSubClick(getAdapterPosition());
         }
     }
 

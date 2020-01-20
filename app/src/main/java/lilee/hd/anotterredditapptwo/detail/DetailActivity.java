@@ -1,4 +1,4 @@
-package lilee.hd.anotterredditapptwo.ui;
+package lilee.hd.anotterredditapptwo.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -12,13 +12,17 @@
         android:contextClickable="true"
         android:visibility="visible">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="8dp"
-            android:importantForAccessibility="yes"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/layout_subreddit_item" />
+       <androidx.core.widget.NestedScrollView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+           <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/home_list_view"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:elevation="8dp"
+               android:importantForAccessibility="yes"
+               android:scrollbars="vertical"
+               tools:listitem="@layout/layout_subreddit_item" />
+       </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

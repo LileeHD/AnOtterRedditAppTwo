@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:padding="@dimen/widget_margin">
+
+    <TextView
+        android:id="@+id/trendy_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/trendy_title"
+        android:text="@string/trendy_title"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_height="80dp"
+        android:id="@+id/trendy_img"
+        android:src="@drawable/leaf"
+        android:layout_toStartOf="@id/trendy_title"/>
+
+</RelativeLayout>

@@ -43,6 +43,4 @@ public class Constants {
     public static RequestBody getRequestBody(String s) {
         return RequestBody.create(s, MediaType.parse("text/plain"));
     }
-//     Firebase
-    public static final String DATABASE_REF= "subreddit";
 }

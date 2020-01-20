@@ -1,6 +1,9 @@
 package lilee.hd.anotterredditapptwo.adapter;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lilee.hd.anotterredditapptwo.R;
 import lilee.hd.anotterredditapptwo.model.Children;
+import lilee.hd.anotterredditapptwo.util.IOnBackPressed;
 import lilee.hd.anotterredditapptwo.viewmodel.PostViewModel;
 
 public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostViewHolder> {
@@ -42,13 +47,13 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
         this.mContext = context;
         this.posts = posts;
         this.mListener = listener;
-        Log.d(TAG, "PostViewAdapter: ");
     }
 
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        MaterialCardView rootView = (MaterialCardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        MaterialCardView rootView = (MaterialCardView) LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.post_item, parent, false);
         postViewModel = new PostViewModel();
         return new PostViewHolder(rootView, mListener);
     }
@@ -69,7 +74,6 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
         } else {
             holder.postBody.setText(post.getData().getBody());
         }
-
     }
 
     private void imageLoader(PostViewHolder holder) {
@@ -92,8 +96,6 @@ public class PostViewAdapter extends RecyclerView.Adapter<PostViewAdapter.PostVi
 
     public interface PostClickListener {
         void onPostClick(PostViewModel postViewModel, int position);
-//
-//        void onSearchClick(View view);
     }
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -15,20 +15,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.BaseActivity" />
-        <activity android:name=".ui.SplashActivity">
+        <receiver android:name=".widget.TrendyWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-        </activity>
-        <activity android:name=".ui.DetailActivity"
-            android:parentActivityName=".ui.HomeActivity"/>
-        <activity android:name=".ui.HomeActivity">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/trendy_widget_info" />
+        </receiver>
+
+        <activity android:name=".home.BaseActivity" />
+        <activity android:name=".home.SplashActivity"></activity>
+        <activity
+            android:name=".detail.DetailActivity"
+            android:parentActivityName=".home.HomeActivity" />
+        <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -36,7 +44,7 @@
 
                 <data
                     android:host="callback"
-                    android:scheme="https://github.com"/>
+                    android:scheme="https://github.com" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -45,9 +53,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="github.com"
-                    android:pathPattern="/callback" />
+                    android:pathPattern="/callback"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>

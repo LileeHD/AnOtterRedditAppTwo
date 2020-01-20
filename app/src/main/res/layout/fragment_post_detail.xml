@@ -1,212 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar_detail">
+            android:orientation="vertical">
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/ic_back"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/white_rounded_btn"
+                        android:contentDescription="@string/option_icon"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_back_arrow" />
+                    <ImageView
+                        android:id="@+id/logo"
+                        android:layout_toRightOf="@id/ic_back"
+                        android:layout_width="150dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="16dp"
+                        android:contentDescription="@string/app_logo"
+                        android:src="@drawable/fullname" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                </RelativeLayout>
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <LinearLayout
+                android:id="@+id/post_container_detail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:padding="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/grey"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/post_subreddit_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/r_subreddit"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/post_author_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="@string/endpoint_user_author"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/post_title_view_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:maxLines="3"
+                    android:padding="8dp"
+                    android:text="@string/post_title"
+                    android:textAlignment="viewStart"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/post_text_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minLines="3"
+                    android:padding="8dp"
+                    android:text="@string/post_body_ipsum"
+                    android:textAlignment="viewStart"
+                    android:textSize="12sp" />
 
                 <ImageView
-                    android:id="@+id/logo"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="@string/app_logo"
-                    android:src="@drawable/fullname"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.444" />
-
-                <ImageButton
-                    android:id="@+id/ic_refresh"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/post_thumbnail_detail"
+                    android:background="@color/grey"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_refresh"
-                    android:background="@drawable/white_rounded_btn"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/option_icon" />
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/imageUrl"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/theotter"
+                    android:visibility="visible"
+                    app:layout_collapseMode="pin" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        android:id="@+id/post_container_detail">
+                <com.google.android.exoplayer2.ui.PlayerView
+                    android:id="@+id/post_video_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="16dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/imageUrl"
+                    android:maxHeight="200dp"
+                    android:minHeight="80dp"
+                    android:src="@drawable/theotter"
+                    android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/post_subreddit_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/r_subreddit"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/date_updated"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/post_author_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:hint="@string/endpoint_user_author"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/post_subreddit_detail"
-            app:layout_constraintStart_toEndOf="@+id/post_subreddit_detail"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comment_list_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                tools:listitem="@layout/layout_comment"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <TextView
-            android:id="@+id/date_updated"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="246dp"
-            android:visibility="gone"
-            android:hint="@string/_7h"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/post_author_detail"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/post_thumbnail_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/imageUrl"
-            android:scaleType="centerCrop"
-            android:src="@drawable/theotter"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_text_detail" />
-
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/post_video_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="16dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/imageUrl"
-            android:maxHeight="200dp"
-            android:minHeight="80dp"
-            android:src="@drawable/theotter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_text_detail"
-            android:visibility="gone" />
-
-
-        <TextView
-            android:textAlignment="viewStart"
-            android:id="@+id/post_title_view_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:maxLines="3"
-            android:padding="8dp"
-            android:text="@string/post_title"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:textAlignment="viewStart"
-            android:id="@+id/post_text_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:minLines="3"
-            android:padding="8dp"
-            android:text="@string/post_body_ipsum"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_title_view_detail" />
-
-        <ImageView
-            android:id="@+id/comment_img_detail"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/comment_icon"
-            android:src="@drawable/ic_comment"
-            app:layout_constraintEnd_toStartOf="@+id/commentsNum_detail"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/commentsNum_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="@string/_127"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/share_img_detail"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/share_img_detail"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/share_icon"
-            android:src="@drawable/ic_share"
-            app:layout_constraintEnd_toStartOf="@+id/share_detail"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/share_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/share"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/comment_list_rv"
-            tools:listitem="@layout/layout_comment"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

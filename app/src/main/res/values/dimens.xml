@@ -6,4 +6,38 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="comment_padding">8dp</dimen>
     <dimen name="comment_minHeight">64dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+
+    <dimen name="subreddit_name_minWidth">100dp</dimen>
+    <dimen name="subreddit_input_minWidth">156dp</dimen>
+    <dimen name="small_iconView_size">40dp</dimen>
+    <dimen name="small_iconView_marginVertical">8dp</dimen>
+    <dimen name="small_iconView_marginHorizontal">32dp</dimen>
+    <dimen name="button_size">48dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="continueButton_marginBottom">32dp</dimen>
+    <dimen name="input_marginBottom">32dp</dimen>
+    <dimen name="subredditName_textSize">20sp</dimen>
+    <dimen name="subredditInput_textSize">@dimen/subredditName_textSize</dimen>
+    <dimen name="continueButton_textSize">18sp</dimen>
+
+    <dimen name="card_height">@dimen/wrap_content</dimen>
+    <dimen name="iconView_size">48dp</dimen>
+    <dimen name="card_margin">16dp</dimen>
+    <dimen name="postView_padding">16dp</dimen>
+    <dimen name="icon_margin">16dp</dimen>
+    <dimen name="subredditNameOnCard_textSize">14sp</dimen>
+    <dimen name="postDetails_textSize">12sp</dimen>
+    <dimen name="title_margin">16dp</dimen>
+    <dimen name="tap_minSize">48dp</dimen>
+    <dimen name="title_textSize">16sp</dimen>
+    <dimen name="textTransitioner_height">50sp</dimen>
+
+    <dimen name="comment_marginVertical">8dp</dimen>
+    <dimen name="comment_marginHorizontal">16dp</dimen>
 </resources>

@@ -1,6 +1,6 @@
-package lilee.hd.anotterredditapptwo.ui;
+package lilee.hd.anotterredditapptwo.home;
 
-import android.content.Intent;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,8 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,11 +35,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lilee.hd.anotterredditapptwo.R;
 import lilee.hd.anotterredditapptwo.adapter.PostViewAdapter;
+import lilee.hd.anotterredditapptwo.detail.DetailFragment;
 import lilee.hd.anotterredditapptwo.model.Children;
 import lilee.hd.anotterredditapptwo.model.Post;
-import lilee.hd.anotterredditapptwo.reddit.RedditNetworking;
-import lilee.hd.anotterredditapptwo.util.SharedViewModel;
 import lilee.hd.anotterredditapptwo.viewmodel.PostViewModel;
+import lilee.hd.anotterredditapptwo.viewmodel.SubredditViewModel;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
@@ -48,7 +47,7 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
     private static final String TAG = "HomeFragment";
     @BindView(R.id.logo)
     ImageView logo;
-    @BindView(R.id.ic_refresh)
+    @BindView(R.id.ic_back)
     ImageButton refreshBtn;
     @BindView(R.id.home_list_view)
     RecyclerView postView;
@@ -59,11 +58,10 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
     private PostViewAdapter adapter;
-    private Children post;
     private LiveData<Post> currentpost;
     private ArrayList<Children> postsList = new ArrayList<>();
     private PostViewModel mPostViewModel;
-    private SharedViewModel sharedViewModel;
+    private SubredditViewModel viewModel;
     private String mSearchResult;
     private boolean mIsRefreshing = false;
     private String sort = "new";
@@ -77,16 +75,10 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
-        RedditNetworking networking = new RedditNetworking();
-        networking.redditCall();
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            postsList.clear();
-            initViewModel();
-            initPostView();
-            mSwipeRefreshLayout.isRefreshing();
-        });
+//        RedditNetworking networking = new RedditNetworking();
+//        networking.redditCall();
         checkConnection();
-        updateRefreshingUI();
+        refreshingUI();
         Log.d(TAG, "onCreateView: PHARAH");
         return view;
     }
@@ -96,7 +88,6 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
         super.onActivityCreated(savedInstanceState);
         mPostViewModel = ViewModelProviders.of(getActivity()).get(PostViewModel.class);
     }
-
     private void initViewModel() {
         mPostViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
         mPostViewModel.initHome();
@@ -108,9 +99,21 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
         });
     }
 
+    private void initUserViewModel() {
+        viewModel = ViewModelProviders.of(this).get(SubredditViewModel.class);
+//        viewModel.initCryAgain();
+        viewModel.needHelp().observe(this, feed -> {
+            List<Children> childrenList = feed.getData().getChildren();
+            postsList.addAll(childrenList);
+            adapter.notifyDataSetChanged();
+            Log.d(TAG, "initUserViewModel: ");
+        });
+    }
+
     private void initPostView() {
         if (adapter == null) {
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(Objects.requireNonNull(getContext()),
+            DividerItemDecoration dividerItemDecoration =
+                    new DividerItemDecoration(Objects.requireNonNull(getContext()),
                     DividerItemDecoration.VERTICAL);
             adapter = new PostViewAdapter(getContext(), postsList, this);
             postView.addItemDecoration(dividerItemDecoration);
@@ -125,29 +128,44 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
     // Click
     @Override
     public void onPostClick(PostViewModel model, int position) {
-        post = postsList.get(position);
+        Children post = postsList.get(position);
         mPostViewModel.sendData(post.getData());
         swapFragment();
-        Log.d(TAG, "onPostClick: ");
+        Log.d(TAG, "onPostClick: " + post.getData().getTitle());
     }
-    private void swapFragment(){
-        DetailFragment detailFragment = new DetailFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, detailFragment);
-        transaction.addToBackStack("home");
-        transaction.commit();
-    }
-    //  Navigation
-    private void updateRefreshingUI() {
-        refreshBtn.setOnClickListener(v -> {
 
+    private void swapFragment() {
+        Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left)
+                .replace(R.id.fragment_container, DetailFragment.newInstance())
+                .addToBackStack("detail")
+                .commit();
+    }
+
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
+
+    //  Navigation
+    private void refreshingUI() {
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            postsList.clear();
+            initViewModel();
+            initPostView();
+            mSwipeRefreshLayout.setRefreshing(false);
         });
-        mSwipeRefreshLayout.setRefreshing(mIsRefreshing);
+        refreshBtn.setOnClickListener(v -> {
+            initViewModel();
+            initPostView();
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_refresh:
                 mSwipeRefreshLayout.setRefreshing(true);
                 initViewModel();
@@ -157,16 +175,17 @@ public class HomeFragment extends Fragment implements PostViewAdapter.PostClickL
         return super.onOptionsItemSelected(item);
     }
 
-    private void checkConnection(){
+    private void checkConnection() {
         ConnectivityManager manager = (ConnectivityManager) getActivity().getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = manager != null ? manager.getActiveNetworkInfo() : null;
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()){
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             initViewModel();
             initPostView();
-        }else{
+        } else {
             connectionInfo.setVisibility(View.VISIBLE);
             connectionInfo.setText(getText(R.string.no_connected));
             mSwipeRefreshLayout.setVisibility(View.GONE);
         }
     }
+
 }
