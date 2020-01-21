@@ -13,7 +13,7 @@
         android:layout_margin="8dp"
         android:contentDescription="@string/trendy_title"
         android:text="@string/trendy_title"
-        android:textSize="24sp"
+        android:textSize="16sp"
         android:textStyle="bold|italic" />
     <ImageView
         android:layout_width="80dp"
